@@ -1,0 +1,171 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "store_name": {
+            "defaultValue": "",
+            "type": "String"
+        },
+        "store_environment": {
+            "defaultValue": "",
+            "type": "String"
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Location for all resources."
+            }
+        },
+        "dbAdministratorLogin": {
+            "type": "string",
+            "minLength": 1,
+            "metadata": {
+                "description": "Database administrator login name"
+            }
+        },
+        "dbAdministratorLoginPassword": {
+            "type": "secureString",
+            "minLength": 8,
+            "metadata": {
+                "description": "Database administrator password"
+            }
+        }
+    },
+    "variables": {
+        "storeFullName": "[concat('wordpress-', parameters('store_environment'), '-', parameters('store_name'))]",
+        "appServicePlanName": "[variables('storeFullName')]",
+        "appServiceName": "[variables('storeFullName')]",
+        "dbServerName": "[variables('storeFullName')]",
+        "dbName": "wordpress"
+    },
+    "resources": [
+        // MySQL Database Server
+        {
+            "type": "Microsoft.DBforMySQL/servers",
+            "apiVersion": "2017-12-01",
+            "name": "[variables('dbServerName')]",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "GP_Gen5_4",
+                "tier": "GeneralPurpose",
+                "family": "Gen5",
+                "capacity": 4
+            },
+            "properties": {
+                "storageProfile": {
+                    "storageMB": 102400,
+                    "backupRetentionDays": 7,
+                    "geoRedundantBackup": "Disabled",
+                    "storageAutogrow": "Enabled"
+                },
+                "version": "5.7",
+                "sslEnforcement": "Disabled",
+                "minimalTlsVersion": "TLSEnforcementDisabled",
+                "infrastructureEncryption": "Disabled",
+                "publicNetworkAccess": "Enabled",
+                "administratorLogin": "[parameters('dbAdministratorLogin')]",
+                "administratorLoginPassword": "[parameters('dbAdministratorLoginPassword')]"
+            }
+        },
+        {
+            "type": "Microsoft.DBforMySQL/servers/firewallRules",
+            "apiVersion": "2017-12-01",
+            "name": "[concat(variables('dbServerName'), '/AllowAllWindowsAzureIps')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforMySQL/servers', variables('dbServerName'))]"
+            ],
+            "properties": {
+                "startIpAddress": "0.0.0.0",
+                "endIpAddress": "0.0.0.0"
+            }
+        },
+        {
+            "type": "Microsoft.DBforMySQL/servers/databases",
+            "apiVersion": "2017-12-01",
+            "name": "[concat(variables('dbServerName'), '/', variables('dbName'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforMySQL/servers', variables('dbServerName'))]"
+            ],
+            "properties": {
+                "charset": "utf8",
+                "collation": "utf8_general_ci"
+            }
+        },
+        // App Service Plan
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2021-02-01",
+            "name": "[variables('appServicePlanName')]",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "S1",
+                "tier": "Standard",
+                "size": "S1",
+                "family": "S",
+                "capacity": 1
+            }
+        },
+        // App Service (Web App)
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2021-02-01",
+            "name": "[variables('appServiceName')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+            ],
+            "kind": "app",
+            "properties": {
+                "enabled": true,
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
+                "clientAffinityEnabled": false,
+                "siteConfig": {
+                    "appSettings": [],
+                    "alwaysOn": true,
+                    "metadata": [
+                        {
+                            "name": "CURRENT_STACK",
+                            "value": "php"
+                        }
+                    ],
+                    "phpVersion": "7.4",
+                    "defaultDocuments": [ "index.php" ]
+                }
+            },
+            "resources": [
+                // App Service Logs
+                // https://docs.microsoft.com/en-us/azure/templates/microsoft.web/2021-02-01/sites/config-logs?tabs=json
+                {
+                    // "type": "Microsoft.Web/sites/config",
+                    "type": "config",
+                    "apiVersion": "2021-02-01",
+                    "name": "logs",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/sites', variables('appServiceName'))]"
+                    ],
+                    "properties": {
+                        "applicationLogs": {
+                            "fileSystem": {
+                                "level": "ERROR"
+                            }
+                        },
+                        "detailedErrorMessages": {
+                            "enabled": "false"
+                        },
+                        "failedRequestsTracing": {
+                            "enabled": "bool"
+                        },
+                        "httpLogs": {
+                            "fileSystem": {
+                                "enabled": "true",
+                                "retentionInDays": "5",
+                                "retentionInMb": "35"
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}
