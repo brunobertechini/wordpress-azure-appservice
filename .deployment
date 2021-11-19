@@ -1,2 +1,2 @@
 [config]
-project = site/wwwroot
+command = deploy.cmd
