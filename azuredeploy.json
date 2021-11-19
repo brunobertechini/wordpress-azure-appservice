@@ -30,14 +30,22 @@
             "metadata": {
                 "description": "Database administrator password"
             }
-        }
+        },
+        "branch": {
+            "type": "string",
+            "defaultValue": "azure/deploy",
+            "metadata": {
+                "description": "Repository Branch to be deployed"
+            }
+        },
     },
     "variables": {
         "storeFullName": "[concat('wordpress-', parameters('store_environment'), '-', parameters('store_name'))]",
         "appServicePlanName": "[variables('storeFullName')]",
         "appServiceName": "[variables('storeFullName')]",
         "dbServerName": "[variables('storeFullName')]",
-        "dbName": "wordpress"
+        "dbName": "wordpress",
+        "repoUrl": "https://github.com/brunobertechini/wordpress-azure-appservice.git"
     },
     "resources": [
         // MySQL Database Server
@@ -163,6 +171,19 @@
                                 "retentionInMb": "35"
                             }
                         }
+                    }
+                },
+                {
+                    "apiVersion": "2015-08-01",
+                    "name": "web",
+                    "type": "sourcecontrols",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/Sites', variables('appServiceName'))]"
+                    ],
+                    "properties": {
+                        "RepoUrl": "[variables('repoUrl')]",
+                        "branch": "[parameters('branch')]",
+                        "IsManualIntegration": true
                     }
                 }
             ]

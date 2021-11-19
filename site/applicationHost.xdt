@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+<system.webServer>
+<fastCgi>
+    <!-- Use a custom PHP Ini for PHP 32bits -->
+    <application fullPath="C:\Program Files (x86)\PHP\v7.4\php-cgi.exe" xdt:Locator="Match(fullPath)">
+        <environmentVariables>
+            <environmentVariable name="PHPRC" xdt:Locator="Match(name)" value="c:\home\site\php.ini" xdt:Transform="SetAttributes(value)" />
+        </environmentVariables>
+    </application>
+</fastCgi>
+
+
+<runtime xdt:Transform="InsertIfMissing">
+    <environmentVariables xdt:Transform="InsertIfMissing">
+
+        <!-- Image Magick Environment Variables -->
+        <add name="Path" value="%Path%;c:\home\site\ext\imagick\;" xdt:Locator="Match(name)" xdt:Transform="InsertIfMissing" />
+        <add name="MAGICK_HOME" value="c:\home\site\ext\imagick\" xdt:Locator="Match(name)" xdt:Transform="InsertIfMissing" />
+        <add name="MAGICK_CODER_MODULE_PATH" value="c:\home\site\ext\imagick\" xdt:Locator="Match(name)" xdt:Transform="InsertIfMissing" />
+        
+    </environmentVariables>
+</runtime>
+
+</system.webServer>
+</configuration>
