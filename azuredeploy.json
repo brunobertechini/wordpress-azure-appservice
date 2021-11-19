@@ -37,7 +37,7 @@
             "metadata": {
                 "description": "Repository Branch to be deployed"
             }
-        },
+        }
     },
     "variables": {
         "storeFullName": "[concat('wordpress-', parameters('store_environment'), '-', parameters('store_name'))]",
