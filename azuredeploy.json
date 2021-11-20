@@ -188,21 +188,6 @@
                     }
                 }
             ]
-        },
-        {
-            "type": "Microsoft.Web/sites/config",
-            "apiVersion": "2020-06-01",
-            "name": "[format('{0}/{1}', variables('appServiceName'), 'connectionstrings')]",
-            "properties": {
-                "defaultConnection": {
-                    "value": "[format('Database={0};Data Source={1};User Id={2}@{3};Password={4}', variables('dbName'), reference(resourceId('Microsoft.DBForMySQL/servers', variables('dbServerName'))).fullyQualifiedDomainName, parameters('dbAdministratorLogin'), variables('dbServerName'), parameters('dbAdministratorLoginPassword'))]",
-                    "type": "MySql"
-                }
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.DBForMySQL/servers', variables('dbServerName'))]",
-                "[resourceId('Microsoft.Web/sites', variables('appServiceName'))]"
-            ]
         }
     ]
 }
