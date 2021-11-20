@@ -107,7 +107,13 @@
             "apiVersion": "2021-02-01",
             "name": "[variables('appServicePlanName')]",
             "location": "[parameters('location')]",
-            "sku": "P1V2"
+            "sku": {
+                "name": "P1v2",
+                "tier": "PremiumV2",
+                "size": "P1v2",
+                "family": "Pv2",
+                "capacity": 1
+            }
         },
         // App Service (Web App)
         {
