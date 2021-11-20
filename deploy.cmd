@@ -20,6 +20,7 @@ IF %ERRORLEVEL% NEQ 0 (
 
 setlocal enabledelayedexpansion
 
+SET SITE_ROOT=%~dp0%..\
 SET ARTIFACTS=%~dp0%..\artifacts
 SET PHP_EXT_TARGET=%~dp0%..\ext
 
@@ -63,7 +64,7 @@ IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
   )
 
   :: Debug
-  echo ROOT: %~dp0%..\
+  echo SITE_ROOT: %SITE_ROOT%
   echo ARTIFACTS: %ARTIFACTS%
   echo DEPLOYMENT_SOURCE: %DEPLOYMENT_SOURCE%
   echo DEPLOYMENT_TARGET: %DEPLOYMENT_TARGET%
@@ -72,8 +73,8 @@ IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
   echo PHP_EXT_TARGET: %PHP_EXT_TARGET%
 
   :: 1.1 Deploy PHP Extensions
-  echo Copying applicationHost.xdt from "%DEPLOYMENT_SOURCE%\site\applicationHost.xdt" to %ROOT%\applicationHost.xdt
-  copy "%DEPLOYMENT_SOURCE%\site\applicationHost.xdt" %ROOT%\applicationHost.xdt
+  echo Copying applicationHost.xdt from "%DEPLOYMENT_SOURCE%\site\applicationHost.xdt" to %SITE_ROOT%\applicationHost.xdt
+  copy "%DEPLOYMENT_SOURCE%\site\applicationHost.xdt" %SITE_ROOT%\applicationHost.xdt
   IF !ERRORLEVEL! NEQ 0 goto error
 
   echo Copying PHP Extensions
