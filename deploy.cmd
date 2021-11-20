@@ -22,6 +22,9 @@ setlocal enabledelayedexpansion
 
 SET ARTIFACTS=%~dp0%..\artifacts
 
+echo RootDir: %~dp0%
+echo Artifacts dir: %ARTIFACTS%
+
 IF NOT DEFINED DEPLOYMENT_SOURCE (
   SET DEPLOYMENT_SOURCE=%~dp0%.
 )
@@ -33,7 +36,8 @@ IF NOT DEFINED DEPLOYMENT_TARGET (
 
 :: Define PHP Extensions dirs
 IF NOT DEFINED EXT_TARGET (
-  SET ARTIFACTS=%~dp0%..\ext
+  SET EXT_TARGET=%ARTIFACTS%\..\ext
+  
 )
 
 IF NOT DEFINED NEXT_MANIFEST_PATH (
