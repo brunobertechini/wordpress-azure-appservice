@@ -72,8 +72,8 @@ IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
   echo PHP_EXT_TARGET: %PHP_EXT_TARGET%
 
   :: 1.1 Deploy PHP Extensions
-  echo Copying applicationHost.xdt
-  copy "%DEPLOYMENT_SOURCE%\site\applicationHost.xdt" %ROOT%
+  echo Copying applicationHost.xdt from "%DEPLOYMENT_SOURCE%\site\applicationHost.xdt" to %ROOT%\applicationHost.xdt
+  copy "%DEPLOYMENT_SOURCE%\site\applicationHost.xdt" %ROOT%\applicationHost.xdt
   IF !ERRORLEVEL! NEQ 0 goto error
 
   echo Copying PHP Extensions
