@@ -5,7 +5,7 @@
     <!-- Use a custom PHP Ini for PHP 32bits -->
     <application fullPath="C:\Program Files (x86)\PHP\v7.4\php-cgi.exe" xdt:Locator="Match(fullPath)">
         <environmentVariables>
-            <environmentVariable name="PHPRC" xdt:Locator="Match(name)" value="c:\home\site\php.ini" xdt:Transform="SetAttributes(value)" />
+            <environmentVariable name="PHPRC" xdt:Locator="Match(name)" value="d:\home\site\php.ini" xdt:Transform="SetAttributes(value)" />
         </environmentVariables>
     </application>
 </fastCgi>
@@ -15,9 +15,9 @@
     <environmentVariables xdt:Transform="InsertIfMissing">
 
         <!-- Image Magick Environment Variables -->
-        <add name="Path" value="%Path%;c:\home\site\ext\imagick\;" xdt:Locator="Match(name)" xdt:Transform="InsertIfMissing" />
-        <add name="MAGICK_HOME" value="c:\home\site\ext\imagick\" xdt:Locator="Match(name)" xdt:Transform="InsertIfMissing" />
-        <add name="MAGICK_CODER_MODULE_PATH" value="c:\home\site\ext\imagick\" xdt:Locator="Match(name)" xdt:Transform="InsertIfMissing" />
+        <add name="Path" value="%Path%;d:\home\site\ext\imagick\;" xdt:Locator="Match(name)" xdt:Transform="InsertIfMissing" />
+        <add name="MAGICK_HOME" value="d:\home\site\ext\imagick\" xdt:Locator="Match(name)" xdt:Transform="InsertIfMissing" />
+        <add name="MAGICK_CODER_MODULE_PATH" value="d:\home\site\ext\imagick\" xdt:Locator="Match(name)" xdt:Transform="InsertIfMissing" />
         
     </environmentVariables>
 </runtime>
