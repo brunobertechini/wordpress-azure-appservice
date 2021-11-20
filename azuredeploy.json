@@ -188,6 +188,22 @@
                     }
                 }
             ]
+        },
+        // Connection String
+        {
+            "type": "Microsoft.Web/sites/config",
+            "apiVersion": "2020-12-01",
+            "name": "[format('{0}/{1}', variables('appServiceName'), 'connectionstrings')]",
+            "properties": {
+                "DefaultConnection": {
+                "value": "[format('Data Source=tcp:{0},1433;Initial Catalog={1};User Id={2}@{3};Password={4};', reference(resourceId('Microsoft.Sql/servers', variables('dbServerName'))).fullyQualifiedDomainName, variables('dbName'), parameters('dbAdministratorLogin'), reference(resourceId('Microsoft.Sql/servers', variables('dbServerName'))).fullyQualifiedDomainName, parameters('dbAdministratorLoginPassword'))]",
+                "type": "SQLAzure"
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', variables('dbServerName'))]",
+                "[resourceId('Microsoft.Web/sites', variables('appServiceName'))]"
+            ]
         }
     ]
 }
