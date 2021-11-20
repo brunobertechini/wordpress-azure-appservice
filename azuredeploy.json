@@ -196,8 +196,8 @@
             "name": "[format('{0}/{1}', variables('appServiceName'), 'connectionstrings')]",
             "properties": {
                 "defaultConnection": {
-                "value": "[format('Database={0};Data Source={1};User Id={2}@{3};Password={4}', variables('dbName'), reference(resourceId('Microsoft.DBForMySQL/servers', variables('dbServerName'))).fullyQualifiedDomainName, parameters('dbAdministratorLogin'), variables('dbServerName'), parameters('dbAdministratorLoginPassword'))]",
-                "type": "MySql"
+                    "value": "[format('Database={0};Data Source={1};User Id={2}@{3};Password={4}', variables('dbName'), reference(resourceId('Microsoft.DBForMySQL/servers', variables('dbServerName'))).fullyQualifiedDomainName, parameters('dbAdministratorLogin'), variables('dbServerName'), parameters('dbAdministratorLoginPassword'))]",
+                    "type": "MySql"
                 }
             },
             "dependsOn": [
