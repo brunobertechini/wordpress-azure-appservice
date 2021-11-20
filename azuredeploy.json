@@ -6,10 +6,6 @@
             "defaultValue": "",
             "type": "String"
         },
-        "store_environment": {
-            "defaultValue": "",
-            "type": "String"
-        },
         "location": {
             "type": "string",
             "defaultValue": "[resourceGroup().location]",
@@ -32,6 +28,14 @@
                 "description": "Database administrator password"
             }
         },
+        "dbName": {
+            "type": "string",
+            "defaultValue": "wordpress",
+            "minLength": 1,
+            "metadata": {
+                "description": "Database name"
+            }
+        },
         "branch": {
             "type": "string",
             "defaultValue": "azure/deploy",
@@ -41,11 +45,10 @@
         }
     },
     "variables": {
-        "storeFullName": "[concat('wordpress-', parameters('store_environment'), '-', parameters('store_name'))]",
-        "appServicePlanName": "[variables('storeFullName')]",
-        "appServiceName": "[variables('storeFullName')]",
-        "dbServerName": "[variables('storeFullName')]",
-        "dbName": "wordpress",
+        "appServiceName": "[parameters('store_name')]",
+        "appServicePlanName": "[concat(parameters('store_name'), '-plan')]",
+        "dbServerName": "[concat(parameters('store_name'), '-db')]",
+        "dbName": "[parameters('dbName')]",
         "repoUrl": "https://github.com/brunobertechini/wordpress-azure-appservice.git"
     },
     "resources": [
