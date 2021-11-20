@@ -21,9 +21,7 @@ IF %ERRORLEVEL% NEQ 0 (
 setlocal enabledelayedexpansion
 
 SET ARTIFACTS=%~dp0%..\artifacts
-
-echo RootDir: %~dp0%
-echo Artifacts dir: %ARTIFACTS%
+SET PHP_EXT_TARGET=%~dp0%..\ext
 
 IF NOT DEFINED DEPLOYMENT_SOURCE (
   SET DEPLOYMENT_SOURCE=%~dp0%.
@@ -64,10 +62,18 @@ IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
     SET IGNORE_MANIFEST_PARAM=-x
   )
 
+  :: Debug
+  echo ROOT: %~dp0%
+  echo ARTIFACTS: %ARTIFACTS%
+  echo DEPLOYMENT_SOURCE: %DEPLOYMENT_SOURCE%
+  echo DEPLOYMENT_TARGET: %DEPLOYMENT_TARGET%
+  echo PREVIOUS_MANIFEST_PATH: %PREVIOUS_MANIFEST_PATH%
+  echo NEXT_MANIFEST_PATH: %NEXT_MANIFEST_PATH%
+  ECHO PHP_EXT_TARGET: %PHP_EXT_TARGET%
+
   :: 1.1 Deploy PHP Extensions
-  echo Deploying PHP Extensions
-  SET EXT_TARGET=%~dp0%..\ext
-  call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 !IGNORE_MANIFEST_PARAM! -f "%DEPLOYMENT_SOURCE%\site\ext" -t "%EXT_TARGET%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
+  echo Deploying PHP ExtensionS  
+  call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 !IGNORE_MANIFEST_PARAM! -f "%DEPLOYMENT_SOURCE%\site\ext" -t "%PHP_EXT_TARGET%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
   IF !ERRORLEVEL! NEQ 0 goto error
 
   :: 1.2 Deploy wwwroot
