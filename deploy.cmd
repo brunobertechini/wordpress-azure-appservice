@@ -63,7 +63,7 @@ IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
   )
 
   :: Debug
-  echo ROOT: %~dp0%
+  echo ROOT: %~dp0%..\
   echo ARTIFACTS: %ARTIFACTS%
   echo DEPLOYMENT_SOURCE: %DEPLOYMENT_SOURCE%
   echo DEPLOYMENT_TARGET: %DEPLOYMENT_TARGET%
@@ -71,14 +71,12 @@ IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
   echo NEXT_MANIFEST_PATH: %NEXT_MANIFEST_PATH%
   echo PHP_EXT_TARGET: %PHP_EXT_TARGET%
 
-
-
   :: 1.1 Deploy PHP Extensions
   echo Copying applicationHost.xdt
-  copy "%DEPLOYMENT_SOURCE%\site\applicationHost.xdt" %ROOT%\..\
+  copy "%DEPLOYMENT_SOURCE%\site\applicationHost.xdt" %ROOT%
   IF !ERRORLEVEL! NEQ 0 goto error
 
-  echo Deploying PHP Extensions
+  echo Copying PHP Extensions
   call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 !IGNORE_MANIFEST_PARAM! -f "%DEPLOYMENT_SOURCE%\site\ext" -t "%PHP_EXT_TARGET%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
   IF !ERRORLEVEL! NEQ 0 goto error
 
