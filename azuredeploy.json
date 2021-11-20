@@ -19,6 +19,7 @@
         },
         "dbAdministratorLogin": {
             "type": "string",
+            "defaultValue": "wordpress",
             "minLength": 1,
             "metadata": {
                 "description": "Database administrator login name"
