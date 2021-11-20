@@ -107,6 +107,9 @@
             "apiVersion": "2021-02-01",
             "name": "[variables('appServicePlanName')]",
             "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforMySQL/servers', variables('dbServerName'))]"
+            ],
             "sku": {
                 "name": "P1v2",
                 "tier": "PremiumV2",
