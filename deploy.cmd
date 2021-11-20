@@ -72,8 +72,9 @@ IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
   echo PHP_EXT_TARGET: %PHP_EXT_TARGET%
 
   :: 1.1 Deploy PHP Extensions
-  echo Deploying PHP ExtensionS  
+  echo Deploying PHP Extensions
   call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 !IGNORE_MANIFEST_PARAM! -f "%DEPLOYMENT_SOURCE%\site\ext" -t "%PHP_EXT_TARGET%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
+  echo Copying applicationHost.xdt
   copy "%DEPLOYMENT_SOURCE%\site\applicationHost.xdt" %ROOT%\..\
   IF !ERRORLEVEL! NEQ 0 goto error
 
