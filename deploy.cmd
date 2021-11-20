@@ -77,6 +77,10 @@ IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
   copy "%DEPLOYMENT_SOURCE%\site\applicationHost.xdt" %SITE_ROOT%\applicationHost.xdt
   IF !ERRORLEVEL! NEQ 0 goto error
 
+  echo Copying php.ini from "%DEPLOYMENT_SOURCE%\site\php.ini" to %SITE_ROOT%\php.ini
+  copy "%DEPLOYMENT_SOURCE%\site\php.ini" %SITE_ROOT%\php.ini
+  IF !ERRORLEVEL! NEQ 0 goto error
+
   echo Copying PHP Extensions
   call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 !IGNORE_MANIFEST_PARAM! -f "%DEPLOYMENT_SOURCE%\site\ext" -t "%PHP_EXT_TARGET%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
   IF !ERRORLEVEL! NEQ 0 goto error
