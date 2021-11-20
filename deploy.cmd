@@ -29,15 +29,8 @@ IF NOT DEFINED DEPLOYMENT_SOURCE (
   SET DEPLOYMENT_SOURCE=%~dp0%.
 )
 
-:: Define wwwroot Target dir
 IF NOT DEFINED DEPLOYMENT_TARGET (
   SET DEPLOYMENT_TARGET=%ARTIFACTS%\wwwroot
-)
-
-:: Define PHP Extensions dirs
-IF NOT DEFINED EXT_TARGET (
-  SET EXT_TARGET=%ARTIFACTS%\..\ext
-  
 )
 
 IF NOT DEFINED NEXT_MANIFEST_PATH (
@@ -73,6 +66,7 @@ IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
 
   :: 1.1 Deploy PHP Extensions
   echo Deploying PHP Extensions
+  SET EXT_TARGET=%~dp0%..\ext
   call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 !IGNORE_MANIFEST_PARAM! -f "%DEPLOYMENT_SOURCE%\site\ext" -t "%EXT_TARGET%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
   IF !ERRORLEVEL! NEQ 0 goto error
 
