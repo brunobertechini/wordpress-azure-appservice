@@ -104,6 +104,18 @@
                 "collation": "utf8_general_ci"
             }
         },
+        {
+            "type": "Microsoft.DBforMySQL/servers/configurations",
+            "apiVersion": "2017-12-01",
+            "name": "[concat(variables('dbServerName'), '/redirect_enabled')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforMySQL/servers', variables('dbServerName'))]"
+            ],
+            "properties": {
+                "value": "ON",
+                "source": "user-override"
+            }
+        },
         // App Service Plan
         {
             "type": "Microsoft.Web/serverfarms",
