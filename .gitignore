@@ -1,2 +1,3 @@
 temp/
 wp-config-sample.php
+.DS_STORE

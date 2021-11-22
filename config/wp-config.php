@@ -132,6 +132,20 @@ define('DOMAIN_CURRENT_SITE', filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SAN
 // Disable WordPress Auto Update
 define( 'WP_AUTO_UPDATE_CORE', false );
 
+//
+// Configure Redis Cache
+//
+$redisHost = (getenv('WP_REDIS_HOST')) ? getenv('WP_REDIS_HOST') : '127.0.0.1';
+$redisPort = (getenv('WP_REDIS_PORT')) ? getenv('WP_REDIS_PORT') : '6379';
+$redisPassword = (getenv('WP_REDIS_PASSWORD')) ? getenv('WP_REDIS_PASSWORD') : '';
+define( 'WP_REDIS_HOST', $redisHost );
+define( 'WP_REDIS_PORT', $redisPort );
+define( 'WP_REDIS_PASSWORD', $redisPassword );
+define( 'WP_REDIS_CLIENT', 'phpredis' );
+define( 'WP_REDIS_TIMEOUT', 1 );
+define( 'WP_REDIS_READ_TIMEOUT', 1 );
+define( 'WP_REDIS_DATABASE', 0 );
+
 /* That's all, stop editing! Happy publishing. */
 
 /** Absolute path to the WordPress directory. */
