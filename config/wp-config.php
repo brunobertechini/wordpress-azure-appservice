@@ -135,9 +135,20 @@ define( 'WP_AUTO_UPDATE_CORE', false );
 //
 // Configure Redis Cache
 //
-$redisHost = (getenv('WP_REDIS_HOST')) ? getenv('WP_REDIS_HOST') : '127.0.0.1';
-$redisPort = (getenv('WP_REDIS_PORT')) ? getenv('WP_REDIS_PORT') : '6379';
-$redisPassword = (getenv('WP_REDIS_PASSWORD')) ? getenv('WP_REDIS_PASSWORD') : '';
+$redis_host = '';
+$redis_port = '';
+$redis_password = '';
+
+foreach ($_SERVER as $key => $value) {
+    if (strpos($key, "CUSTOMCONNSTR_redis") !== 0) {
+        continue;
+    }
+    
+    $redis_host = preg_replace("/^.*Host=(.+?);.*$/", "\\1", $value);
+    $redis_port = preg_replace("/^.*Port=(.+?);.*$/", "\\1", $value);
+    $redis_password = preg_replace("/^.*Password=(.+?)$/", "\\1", $value);
+}
+
 define( 'WP_REDIS_HOST', $redisHost );
 define( 'WP_REDIS_PORT', $redisPort );
 define( 'WP_REDIS_PASSWORD', $redisPassword );

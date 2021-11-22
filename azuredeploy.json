@@ -48,6 +48,7 @@
         "appServiceName": "[parameters('store_name')]",
         "appServicePlanName": "[concat(parameters('store_name'), '-plan')]",
         "dbServerName": "[concat(parameters('store_name'), '-db')]",
+        "redisCacheName": "[concat(parameters('store_name'), '-cache')]",
         "dbName": "[parameters('dbName')]",
         "repoUrl": "https://github.com/brunobertechini/wordpress-azure-appservice.git"
     },
@@ -116,6 +117,22 @@
                 "source": "user-override"
             }
         },
+        // Redis Cache
+        {
+            "type": "Microsoft.Cache/redis",
+            "apiVersion": "2020-06-01",
+            "name": "[variables('redisCacheName')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "enableNonSslPort": false,
+                "minimumTlsVersion": "1.2",
+                "sku": {
+                    "capacity": "1",
+                    "family": "C",
+                    "name": "Standard"
+                }
+            }
+        },
         // App Service Plan
         {
             "type": "Microsoft.Web/serverfarms",
@@ -123,7 +140,8 @@
             "name": "[variables('appServicePlanName')]",
             "location": "[parameters('location')]",
             "dependsOn": [
-                "[resourceId('Microsoft.DBforMySQL/servers', variables('dbServerName'))]"
+                "[resourceId('Microsoft.DBforMySQL/servers', variables('dbServerName'))]",
+                "[resourceId('Microsoft.Cache/redis', variables('redisCacheName'))]"
             ],
             "sku": {
                 "name": "P2v3",
@@ -216,10 +234,15 @@
                 "defaultConnection": {
                     "value": "[format('Database={0};Data Source={1};User Id={2}@{3};Password={4}', variables('dbName'), reference(resourceId('Microsoft.DBForMySQL/servers', variables('dbServerName'))).fullyQualifiedDomainName, parameters('dbAdministratorLogin'), variables('dbServerName'), parameters('dbAdministratorLoginPassword'))]",
                     "type": "MySql"
+                },
+                "redis": {
+                    "value": "[format('Host={0};Port={1};Password={2}',reference(resourceId('Microsoft.Cache/redis', variables('redisCacheName'))),'6379',listKeys(resourceId('Microsoft.Cache/redis', variables('redisCacheName')), providers('Microsoft.Cache', 'redis').apiVersions[0]).primaryKey)]",
+                    "type": "Custom"
                 }
             },
             "dependsOn": [
                 "[resourceId('Microsoft.DBForMySQL/servers', variables('dbServerName'))]",
+                "[resourceId('Microsoft.Cache/redis', variables('redisCacheName'))]",
                 "[resourceId('Microsoft.Web/sites', variables('appServiceName'))]"
             ]
         }
