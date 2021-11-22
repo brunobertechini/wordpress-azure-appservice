@@ -129,6 +129,8 @@ define('WP_SITEURL', 'https://'. filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_
 define('WP_CONTENT_URL', '/wp-content');
 define('DOMAIN_CURRENT_SITE', filter_input(INPUT_SERVER, 'HTTP_HOST', FILTER_SANITIZE_STRING));
 
+// Disable WordPress Auto Update
+define( 'WP_AUTO_UPDATE_CORE', false );
 
 /* That's all, stop editing! Happy publishing. */
 
