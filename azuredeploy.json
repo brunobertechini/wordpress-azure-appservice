@@ -42,7 +42,25 @@
             "metadata": {
                 "description": "Repository Branch to be deployed"
             }
-        }
+        },
+        // "redisPort": {
+        //     "type": "string",
+        //     "defaultValue": "6380",
+        //     "metadata": {
+        //         "description": "Redis Connection Port (6379 for tcp and 6380 for tls)"
+        //     }
+        // },
+        // "redisScheme": {
+        //     "type": "string",
+        //     "allowedValues": [
+        //         "tls",
+        //         "tcp"
+        //     ],
+        //     "defaultValue": "tls",
+        //     "metadata": {
+        //         "description": "Redis Connection Scheme (tcp, tls)"
+        //     }
+        // }
     },
     "variables": {
         "appServiceName": "[parameters('store_name')]",
@@ -120,10 +138,11 @@
         // Redis Cache
         {
             "type": "Microsoft.Cache/redis",
-            "apiVersion": "2020-06-01",
+            "apiVersion": "2020-12-01",
             "name": "[variables('redisCacheName')]",
             "location": "[parameters('location')]",
             "properties": {
+                "redisVersion": "6",
                 "enableNonSslPort": false,
                 "minimumTlsVersion": "1.2",
                 "sku": {
@@ -235,7 +254,7 @@
                     "type": "MySql"
                 },
                 "redis": {
-                    "value": "[format('Host={0};Port={1};Password={2}',reference(resourceId('Microsoft.Cache/redis', variables('redisCacheName'))).hostName, '6379', listKeys(resourceId('Microsoft.Cache/redis', variables('redisCacheName')), providers('Microsoft.Cache', 'redis').apiVersions[0]).primaryKey)]",
+                    "value": "[format('Host={0};Port={1};Password={2};Scheme={3}',reference(resourceId('Microsoft.Cache/redis', variables('redisCacheName'))).hostName, '6380', listKeys(resourceId('Microsoft.Cache/redis', variables('redisCacheName')), providers('Microsoft.Cache', 'redis').apiVersions[0]).primaryKey, 'tls')]",
                     "type": "Custom"
                 }
             },
