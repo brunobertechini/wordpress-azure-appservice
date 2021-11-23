@@ -17,9 +17,9 @@ foreach ($_SERVER as $key => $value) {
     $redis_password = preg_replace("/^.*Password=(.+?)$/", "\\1", $value);
 }
 
-define( 'WP_REDIS_HOST', $redisHost );
-define( 'WP_REDIS_PORT', $redisPort );
-define( 'WP_REDIS_PASSWORD', $redisPassword );
+define( 'WP_REDIS_HOST', $redis_host );
+define( 'WP_REDIS_PORT', $redis_port );
+define( 'WP_REDIS_PASSWORD', $redis_password );
 define( 'WP_REDIS_CLIENT', 'phpredis' );
 define( 'WP_REDIS_TIMEOUT', 1 );
 define( 'WP_REDIS_READ_TIMEOUT', 1 );
