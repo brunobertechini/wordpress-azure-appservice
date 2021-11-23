@@ -156,8 +156,8 @@ define( 'WP_REDIS_SCHEME', $redis_scheme);
 define( 'WP_REDIS_PORT', $redis_port );
 define( 'WP_REDIS_PASSWORD', $redis_password );
 define( 'WP_REDIS_CLIENT', 'phpredis' );
-define( 'WP_REDIS_TIMEOUT', 1 );
-define( 'WP_REDIS_READ_TIMEOUT', 1 );
+define( 'WP_REDIS_TIMEOUT', 5 );
+define( 'WP_REDIS_READ_TIMEOUT', 5 );
 define( 'WP_REDIS_DATABASE', 0 );
 
 /* That's all, stop editing! Happy publishing. */
