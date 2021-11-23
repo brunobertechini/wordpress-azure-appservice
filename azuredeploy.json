@@ -238,6 +238,7 @@
                 "redis": {
                     "value": "[format('Host={0};Port={1};Password={2}',reference(resourceId('Microsoft.Cache/redis', variables('redisCacheName'))).hostName, '6379', listKeys(resourceId('Microsoft.Cache/redis', variables('redisCacheName')), providers('Microsoft.Cache', 'redis').apiVersions[0]).primaryKey)]",
                     "type": "Custom"
+                }
             },
             "dependsOn": [
                 "[resourceId('Microsoft.DBForMySQL/servers', variables('dbServerName'))]",
