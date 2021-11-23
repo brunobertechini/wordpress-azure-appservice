@@ -139,10 +139,9 @@
             "apiVersion": "2021-02-01",
             "name": "[variables('appServicePlanName')]",
             "location": "[parameters('location')]",
-            // "dependsOn": [
-            //     "[resourceId('Microsoft.DBforMySQL/servers', variables('dbServerName'))]",
-            //     "[resourceId('Microsoft.Cache/redis', variables('redisCacheName'))]"
-            // ],
+            "dependsOn": [
+                "[resourceId('Microsoft.DBforMySQL/servers', variables('dbServerName'))]"
+            ],
             "sku": {
                 "name": "P2v3",
                 "tier": "PremiumV3",
