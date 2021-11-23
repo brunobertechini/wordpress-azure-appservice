@@ -255,7 +255,7 @@
                     "type": "MySql"
                 },
                 "redis": {
-                    "value": "[format('Host={0};Port={1};Password={2};Scheme={3}',reference(resourceId('Microsoft.Cache/redis', variables('redisCacheName'))).hostName, '6380', listKeys(resourceId('Microsoft.Cache/redis', variables('redisCacheName')), providers('Microsoft.Cache', 'redis').apiVersions[0]).primaryKey, 'tls')]",
+                    "value": "[format('Host={0};Scheme={1};Port={2};Password={3}',reference(resourceId('Microsoft.Cache/redis', variables('redisCacheName'))).hostName, 'tls', '6380', listKeys(resourceId('Microsoft.Cache/redis', variables('redisCacheName')), providers('Microsoft.Cache', 'redis').apiVersions[0]).primaryKey)]",
                     "type": "Custom"
                 }
             },
