@@ -139,10 +139,10 @@
             "apiVersion": "2021-02-01",
             "name": "[variables('appServicePlanName')]",
             "location": "[parameters('location')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.DBforMySQL/servers', variables('dbServerName'))]",
-                "[resourceId('Microsoft.Cache/redis', variables('redisCacheName'))]"
-            ],
+            // "dependsOn": [
+            //     "[resourceId('Microsoft.DBforMySQL/servers', variables('dbServerName'))]",
+            //     "[resourceId('Microsoft.Cache/redis', variables('redisCacheName'))]"
+            // ],
             "sku": {
                 "name": "P2v3",
                 "tier": "PremiumV3",
@@ -236,9 +236,8 @@
                     "type": "MySql"
                 },
                 "redis": {
-                    "value": "[format('Host={0};Port={1};Password={2}',reference(resourceId('Microsoft.Cache/redis', variables('redisCacheName'))),'6379',listKeys(resourceId('Microsoft.Cache/redis', variables('redisCacheName')), providers('Microsoft.Cache', 'redis').apiVersions[0]).primaryKey)]",
+                    "value": "[format('Host={0};Port={1};Password={2}',reference(resourceId('Microsoft.Cache/redis', variables('redisCacheName'))).hostName, '6379', listKeys(resourceId('Microsoft.Cache/redis', variables('redisCacheName')), providers('Microsoft.Cache', 'redis').apiVersions[0]).primaryKey)]",
                     "type": "Custom"
-                }
             },
             "dependsOn": [
                 "[resourceId('Microsoft.DBForMySQL/servers', variables('dbServerName'))]",
