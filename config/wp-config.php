@@ -146,9 +146,9 @@ foreach ($_SERVER as $key => $value) {
     }
     
     $redis_host = preg_replace("/^.*Host=(.+?);.*$/", "\\1", $value);
+    $redis_scheme = preg_replace("/^.*Scheme=(.+?);.*$/", "\\1", $value);
     $redis_port = preg_replace("/^.*Port=(.+?);.*$/", "\\1", $value);
     $redis_password = preg_replace("/^.*Password=(.+?)$/", "\\1", $value);
-    $redis_scheme = preg_replace("/^.*Scheme=(.+?)$/", "\\1", $value);
 }
 
 define( 'WP_REDIS_HOST', $redis_host );
