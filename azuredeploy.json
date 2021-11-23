@@ -38,7 +38,7 @@
         },
         "branch": {
             "type": "string",
-            "defaultValue": "azure/deploy",
+            "defaultValue": "master",
             "metadata": {
                 "description": "Repository Branch to be deployed"
             }
