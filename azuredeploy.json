@@ -42,7 +42,8 @@
             "metadata": {
                 "description": "Repository Branch to be deployed"
             }
-        },
+        }
+        //,
         // "redisPort": {
         //     "type": "string",
         //     "defaultValue": "6380",
