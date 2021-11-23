@@ -25,8 +25,8 @@ define( 'WP_REDIS_TIMEOUT', 1 );
 define( 'WP_REDIS_READ_TIMEOUT', 1 );
 define( 'WP_REDIS_DATABASE', 0 );
 
-echo "Redis Host: ", $redis_host, "\n< br/>";
-echo "Redis Port: ", $redis_port, "\n< br/>";
-echo "Redis Password: ", $redis_password, "\n< br/>";
+echo "Redis Host: ", $redis_host, "\n<br/>";
+echo "Redis Port: ", $redis_port, "\n<br/>";
+echo "Redis Password: ", $redis_password, "\n<br/>";
 
 ?>
