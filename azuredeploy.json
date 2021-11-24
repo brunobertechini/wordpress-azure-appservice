@@ -72,10 +72,10 @@
         "repoUrl": "https://github.com/brunobertechini/wordpress-azure-appservice.git"
     },
     "resources": [
-        // MySQL Database Server
+        // Database Server
         {
-            "type": "Microsoft.DBforMySQL/servers",
-            "apiVersion": "2017-12-01",
+            "type": "Microsoft.DBforMariaDB/servers",
+            "apiVersion": "2018-06-01",
             "name": "[variables('dbServerName')]",
             "location": "[parameters('location')]",
             "sku": {
@@ -91,7 +91,7 @@
                     "geoRedundantBackup": "Disabled",
                     "storageAutogrow": "Enabled"
                 },
-                "version": "8.0",
+                "version": "10.3",
                 "sslEnforcement": "Enabled",
                 "minimalTlsVersion": "TLS1_2",
                 // "infrastructureEncryption": "Disabled",
@@ -101,11 +101,11 @@
             }
         },
         {
-            "type": "Microsoft.DBforMySQL/servers/firewallRules",
-            "apiVersion": "2017-12-01",
+            "type": "Microsoft.DBforMariaDB/servers/firewallRules",
+            "apiVersion": "2018-06-01",
             "name": "[concat(variables('dbServerName'), '/AllowAllWindowsAzureIps')]",
             "dependsOn": [
-                "[resourceId('Microsoft.DBforMySQL/servers', variables('dbServerName'))]"
+                "[resourceId('Microsoft.DBforMariaDB/servers', variables('dbServerName'))]"
             ],
             "properties": {
                 "startIpAddress": "0.0.0.0",
@@ -113,11 +113,11 @@
             }
         },
         {
-            "type": "Microsoft.DBforMySQL/servers/databases",
-            "apiVersion": "2017-12-01",
+            "type": "Microsoft.DBforMariaDB/servers/databases",
+            "apiVersion": "2018-06-01",
             "name": "[concat(variables('dbServerName'), '/', variables('dbName'))]",
             "dependsOn": [
-                "[resourceId('Microsoft.DBforMySQL/servers', variables('dbServerName'))]"
+                "[resourceId('Microsoft.DBforMariaDB/servers', variables('dbServerName'))]"
             ],
             "properties": {
                 "charset": "utf8",
@@ -125,11 +125,11 @@
             }
         },
         {
-            "type": "Microsoft.DBforMySQL/servers/configurations",
-            "apiVersion": "2017-12-01",
+            "type": "Microsoft.DBforMariaDB/servers/configurations",
+            "apiVersion": "2018-06-01",
             "name": "[concat(variables('dbServerName'), '/redirect_enabled')]",
             "dependsOn": [
-                "[resourceId('Microsoft.DBforMySQL/servers', variables('dbServerName'))]"
+                "[resourceId('Microsoft.DBforMariaDB/servers', variables('dbServerName'))]"
             ],
             "properties": {
                 "value": "ON",
@@ -160,7 +160,7 @@
             "name": "[variables('appServicePlanName')]",
             "location": "[parameters('location')]",
             "dependsOn": [
-                "[resourceId('Microsoft.DBforMySQL/servers', variables('dbServerName'))]"
+                "[resourceId('Microsoft.DBforMariaDB/servers', variables('dbServerName'))]"
             ],
             "sku": {
                 "name": "P2v3",
@@ -251,7 +251,7 @@
             "name": "[format('{0}/{1}', variables('appServiceName'), 'connectionstrings')]",
             "properties": {
                 "defaultConnection": {
-                    "value": "[format('Database={0};Data Source={1};User Id={2}@{3};Password={4}', variables('dbName'), reference(resourceId('Microsoft.DBForMySQL/servers', variables('dbServerName'))).fullyQualifiedDomainName, parameters('dbAdministratorLogin'), variables('dbServerName'), parameters('dbAdministratorLoginPassword'))]",
+                    "value": "[format('Database={0};Data Source={1};User Id={2}@{3};Password={4}', variables('dbName'), reference(resourceId('Microsoft.DBforMariaDB/servers', variables('dbServerName'))).fullyQualifiedDomainName, parameters('dbAdministratorLogin'), variables('dbServerName'), parameters('dbAdministratorLoginPassword'))]",
                     "type": "MySql"
                 },
                 "redis": {
@@ -260,7 +260,7 @@
                 }
             },
             "dependsOn": [
-                "[resourceId('Microsoft.DBForMySQL/servers', variables('dbServerName'))]",
+                "[resourceId('Microsoft.DBforMariaDB/servers', variables('dbServerName'))]",
                 "[resourceId('Microsoft.Cache/redis', variables('redisCacheName'))]",
                 "[resourceId('Microsoft.Web/sites', variables('appServiceName'))]"
             ]
